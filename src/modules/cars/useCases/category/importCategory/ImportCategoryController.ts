@@ -2,14 +2,17 @@ import { Request, Response } from "express";
 import ImportCategoryUseCase from "./ImportCategoryUseCase";
 
 export default class ImportCategoryController {
-
   constructor(private importCategoryController: ImportCategoryUseCase) {}
 
-  handle(request: Request, response: Response): Response {
-    const { file } = request;
-    
-    this.importCategoryController.execute(file);
+  async handle(request: Request, response: Response): Promise<Response> {
+    try {
+      const { file } = request;
 
-    return response.send();
+      await this.importCategoryController.execute(file);
+
+      return response.status(201).json({ sucess: "Categorias importadas com sucesso!" });
+    } catch (err) {
+      return response.status(400).json({ error: err.message });
+    }
   }
 }

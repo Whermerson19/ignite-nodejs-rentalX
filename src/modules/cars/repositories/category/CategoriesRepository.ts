@@ -10,17 +10,17 @@ export default class CategoriesRepository implements ICategoriesRepository {
 
   private static INSTANCE: CategoriesRepository;
 
-  private constructor() {
+  constructor() {
     this.ormRepository = getRepository(Category);
   }
 
-  public static getInstance(): CategoriesRepository {
-    if (!CategoriesRepository.INSTANCE) {
-      CategoriesRepository.INSTANCE = new CategoriesRepository();
-    }
+  // public static getInstance(): CategoriesRepository {
+  //   if (!CategoriesRepository.INSTANCE) {
+  //     CategoriesRepository.INSTANCE = new CategoriesRepository();
+  //   }
 
-    return CategoriesRepository.INSTANCE;
-  }
+  //   return CategoriesRepository.INSTANCE;
+  // }
 
   async create({ name, description }: ICreateCategoryDTO): Promise<Category> {
     const category = this.ormRepository.create({

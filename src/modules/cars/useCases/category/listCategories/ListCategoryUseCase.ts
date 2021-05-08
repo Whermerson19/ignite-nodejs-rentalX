@@ -4,8 +4,8 @@ import ICategoriesRepository from "../../../repositories/category/ICategoriesRep
 export default class ListCategoryUseCase {
   constructor(private categoriesRepository: ICategoriesRepository) {}
 
-  execute(): Category[] {
-    const categories = this.categoriesRepository.index();
+  async execute(): Promise<Category[]> {
+    const categories = await this.categoriesRepository.index();
     return categories;
   }
 }
