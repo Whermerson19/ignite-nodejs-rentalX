@@ -29,7 +29,10 @@ export default class ImportCategoryUseCase {
             description,
           });
         })
-        .on("end", () => resolve(categories))
+        .on("end", () => {
+          fs.promises.unlink(file.path);
+          resolve(categories);
+        })
         .on("error", (err) => reject(err));
     });
   }
@@ -46,7 +49,7 @@ export default class ImportCategoryUseCase {
         this.categoryRepository.create({
           name,
           description,
-        })
+        });
       }
     });
   }
