@@ -9,7 +9,7 @@ import "./database";
 
 import "./shared/container";
 
-import appRouter from "./routes";
+import appRouter from "./shared/routes";
 
 const app = express();
 app.use(express.json());
