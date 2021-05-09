@@ -1,32 +1,39 @@
+import { getRepository, Repository } from "typeorm";
 import Specification from "../../entities/Specification";
-import ISpecificationsRepository, { ICreateSpecificationDTO } from "./ISpecificationsRepository";
+import ISpecificationsRepository, {
+  ICreateSpecificationDTO,
+} from "./ISpecificationsRepository";
 
-export default class SpecificationsRepository implements ISpecificationsRepository {
-  
-  private specifications: Specification[];
+export default class SpecificationsRepository
+  implements ISpecificationsRepository {
+  private specificationsRepostiory: Repository<Specification>;
 
   constructor() {
-    this.specifications = [];
+    this.specificationsRepostiory = getRepository(Specification);
   }
-  
-  findByName(name: string): Specification | undefined {
-    const specification = this.specifications.find(specification => specification.name === name);
+
+  async findByName(name: string): Promise<Specification | undefined> {
+    const specification = this.specificationsRepostiory.findOne({ name });
     return specification;
   }
-  create({ name, description }: ICreateSpecificationDTO): void {
-    const specification = new Specification();
 
-    Object.assign(specification, {
-      id: Math.floor(Math.random() * 34567823658).toString(),
+  async create({
+    name,
+    description,
+  }: ICreateSpecificationDTO): Promise<Specification> {
+    const specification = this.specificationsRepostiory.create({
       name,
       description,
-      createdAt: new Date()
     });
 
-    this.specifications.push(specification);
-  }
-  index(): Specification[] {
-    throw new Error("Method not implemented.");
+    return this.specificationsRepostiory.save(specification);
   }
 
+  async index(): Promise<Specification[]> {
+    return this.specificationsRepostiory.find();
+  }
+
+  async save(specification: Specification): Promise<Specification> {
+    return this.specificationsRepostiory.save(specification);
+  }
 }
