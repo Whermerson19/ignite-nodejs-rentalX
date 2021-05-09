@@ -1,15 +1,15 @@
-import CategoriesRepository from "../../../repositories/category/CategoriesRepository";
-import ImportCategoryController from "./ImportCategoryController";
-import ImportCategoryUseCase from "./ImportCategoryUseCase";
+// import CategoriesRepository from "../../../repositories/category/CategoriesRepository";
+// import ImportCategoryController from "./ImportCategoryController";
+// import ImportCategoryUseCase from "./ImportCategoryUseCase";
 
-export default (): ImportCategoryController => {
-  const categoryRepository = new CategoriesRepository();
+// export default (): ImportCategoryController => {
+//   const categoryRepository = new CategoriesRepository();
 
-  const importCategoryUseCase = new ImportCategoryUseCase(categoryRepository);
+//   const importCategoryUseCase = new ImportCategoryUseCase(categoryRepository);
 
-  const importCategoryController = new ImportCategoryController(
-    importCategoryUseCase
-  );
+//   const importCategoryController = new ImportCategoryController(
+//     importCategoryUseCase
+//   );
 
-  return importCategoryController;
-};
+//   return importCategoryController;
+// };
