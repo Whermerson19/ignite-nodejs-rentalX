@@ -4,18 +4,14 @@ import ImportCategoryUseCase from "./ImportCategoryUseCase";
 
 export default class ImportCategoryController {
   async handle(request: Request, response: Response): Promise<Response> {
-    try {
-      const { file } = request;
+    const { file } = request;
 
-      const importCategoryController = container.resolve(ImportCategoryUseCase);
+    const importCategoryController = container.resolve(ImportCategoryUseCase);
 
-      await importCategoryController.execute(file);
+    await importCategoryController.execute(file);
 
-      return response
-        .status(201)
-        .json({ sucess: "Categorias importadas com sucesso!" });
-    } catch (err) {
-      return response.status(400).json({ error: err.message });
-    }
+    return response
+      .status(201)
+      .json({ sucess: "Categorias importadas com sucesso!" });
   }
 }
