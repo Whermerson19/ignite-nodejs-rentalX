@@ -1,5 +1,7 @@
 import { container } from "tsyringe";
 
+import "./providers";
+
 import IUsersRepository from "../../modules/accounts/repositories/users/IUsersRepository";
 import ICategoryRepository from "../../modules/cars/repositories/category/ICategoriesRepository";
 import ISpecificationsRepository from "../../modules/cars/repositories/specifications/ISpecificationsRepository";

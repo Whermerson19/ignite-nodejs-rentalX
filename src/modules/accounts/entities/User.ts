@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
-import { Exclude } from "class-transformer";
+import { Exclude, Expose } from "class-transformer";
 
 @Entity("users")
 export default class User {
@@ -25,9 +25,17 @@ export default class User {
   @Column()
   driverLicense: string;
 
+  @Column()
+  avatar: string;
+
   @Column("boolean")
   isAdmin: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @Expose({ name: "avatarURL" })
+  getAvatarUrl(): string | null {
+    return this.avatar ? `http://localhost:3333/files/${this.avatar}` : null;
+  }
 }

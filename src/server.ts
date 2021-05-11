@@ -12,11 +12,14 @@ import "./shared/container";
 
 import appRouter from "./shared/routes";
 import AppError from "./shared/errors/AppError";
+import uploadConfig from "./shared/config/upload";
 
 const app = express();
 app.use(express.json());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+app.use("/files", express.static(uploadConfig.uploadFolder));
 
 app.use(appRouter);
 
