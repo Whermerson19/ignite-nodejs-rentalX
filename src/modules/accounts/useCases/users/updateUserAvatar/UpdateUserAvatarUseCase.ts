@@ -26,11 +26,9 @@ export default class UpdateUserAvatarUseCase {
 
     if (!user) throw new AppError("This user does not exist", 401);
 
-    if (user.avatar) await this.storageProvider.deleteFile(user.avatar);
+    if (user.avatar) await this.storageProvider.deleteFile(`./tmp/avatar/${user.avatar}`);
 
-    const newAvatar = await this.storageProvider.saveFile(avatarFile);
-
-    user.avatar = newAvatar;
+    user.avatar = avatarFile;
 
     return this.usersRepository.save(user);
   }
