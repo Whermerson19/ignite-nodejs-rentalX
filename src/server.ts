@@ -10,10 +10,10 @@ import swaggerFile from "./swagger.json";
 
 import "./database";
 
-import "./shared/container";
+import "@shared/container";
 
-import appRouter from "./shared/routes";
-import AppError from "./shared/errors/AppError";
+import appRouter from "@shared/routes";
+import AppError from "@shared/errors/AppError";
 
 const app = express();
 app.use(express.json());

@@ -21,7 +21,7 @@ export default class UsersRepositoryInMemory implements IUsersRepository {
     const { name, email, password, driverLicense } = data;
 
     Object.assign(user, {
-      id: Math.floor(Math.random() * 93847589237),
+      id: Math.floor(Math.random() * 93847589237).toString(),
       name,
       email,
       password,

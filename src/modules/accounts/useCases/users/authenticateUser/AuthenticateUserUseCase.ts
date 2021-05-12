@@ -1,13 +1,12 @@
 import { inject, injectable } from "tsyringe";
 
-import User from "../../../entities/User";
-import IUsersRepository from "../../../repositories/users/IUsersRepository";
-
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
-import authConfig from '../../../../../shared/config/auth'
-import AppError from "../../../../../shared/errors/AppError";
+import authConfig from '@shared/config/auth'
+import AppError from "@shared/errors/AppError";
+import User from "@modules/accounts/entities/User";
+import IUsersRepository from "@modules/accounts/repositories/users/IUsersRepository";
 
 interface IRequest {
   email: string;
