@@ -1,5 +1,5 @@
-import ICreateCategoryDTO from "../../../dtos/ICreateCategoryDTO";
-import Category from "../../../entities/Category";
+import ICreateCategoryDTO from "../../dtos/ICreateCategoryDTO";
+import Category from "../../infra/typeorm/entities/Category";
 import ICategoryRepository from "../ICategoriesRepository";
 
 export default class CategoriesRepositoryInMemory

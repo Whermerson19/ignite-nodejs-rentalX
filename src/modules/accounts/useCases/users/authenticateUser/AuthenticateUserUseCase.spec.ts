@@ -1,5 +1,5 @@
-import UsersRepositoryInMemory from "../../../repositories/users/in-memory/UsersRepositoryInMemory";
 
+import UsersRepositoryInMemory from "@modules/accounts/repositories/in-memory/UsersRepositoryInMemory";
 import AuthenticateUserUseCase from "./AuthenticateUserUseCase";
 import CreateUserUseCase from "../createUser/CreateUserUseCase";
 import AppError from "@shared/errors/AppError";
@@ -18,7 +18,7 @@ describe("Authenticate user", () => {
   });
 
   it("should be able to create a session", async () => {
-    await createUserUseCase.execute({
+    const user = await createUserUseCase.execute({
       name: "User Test",
       email: "user@test.com",
       driverLicense: "1234",
@@ -26,7 +26,7 @@ describe("Authenticate user", () => {
     });
 
     const response = await authenticateUserUseCase.execute({
-      email: "user@test.com",
+      email: user.email,
       password: "12345",
     });
 
