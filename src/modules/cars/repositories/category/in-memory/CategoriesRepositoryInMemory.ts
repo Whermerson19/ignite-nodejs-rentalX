@@ -29,16 +29,7 @@ export default class CategoriesRepositoryInMemory
     return category;
   }
   async save(category: Category): Promise<Category> {
-    let selectedCategory = this.categories.filter(
-      (curr) => curr.id === category.id
-    )[0];
-
-    Object.assign(selectedCategory, {
-      name: category.name,
-      description: category.description,
-    });
-
-    return selectedCategory;
+    return category;
   }
 }
 4;
