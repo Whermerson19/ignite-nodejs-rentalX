@@ -10,6 +10,12 @@ import Category from "./Category";
 
 @Entity("cars")
 export default class Car {
+  constructor() {
+    if (!this.available) {
+      this.available = true;
+    }
+  }
+
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
