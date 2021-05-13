@@ -18,7 +18,7 @@ export default class CategoriesRepositoryInMemory
     const category = new Category();
 
     Object.assign(category, {
-      id: Math.floor(Math.random() * 5434634756253),
+      id: Math.floor(Math.random() * 5434634756253).toString(),
       name,
       description,
       createdAt: new Date(),

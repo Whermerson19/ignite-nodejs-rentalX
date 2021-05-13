@@ -19,7 +19,9 @@ export default class CreateCategoryUseCase {
     const categoryAlreadyExist = await this.categoriesRepository.findByName(
       name
     );
-    if (categoryAlreadyExist) throw new AppError("This category already exist");
+    if (categoryAlreadyExist) {
+      throw new AppError("This category already exist");
+    }
 
     const category = await this.categoriesRepository.create({
       name,
