@@ -33,8 +33,8 @@ describe("Authenticate user", () => {
     expect(response).toHaveProperty("token");
   });
 
-  it("should not be able to authenticate an nonexistent user", () => {
-    expect(async () => {
+  it("should not be able to authenticate an nonexistent user", async() => {
+    await expect(async () => {
       await authenticateUserUseCase.execute({
         email: "fake@email.com",
         password: "12345",
@@ -42,8 +42,8 @@ describe("Authenticate user", () => {
     }).rejects.toBeInstanceOf(AppError);
   });
 
-  it("should not be able to authenticate with incorrect password", () => {
-    expect(async () => {
+  it("should not be able to authenticate with incorrect password", async() => {
+    await expect(async () => {
       const user = await createUserUseCase.execute({
         name: "User Test",
         email: "user@test.com",

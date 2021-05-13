@@ -1,10 +1,14 @@
-
 import ICreateUserDTO from "@modules/accounts/dtos/ICreateUserDTO";
 import User from "@modules/accounts/infra/typeorm/entities/User";
+import { uuid } from "uuidv4";
 import IUsersRepository from "../IUsersRepository";
 
 export default class UsersRepositoryInMemory implements IUsersRepository {
-  users: User[] = [];
+  users: User[];
+
+  constructor() {
+    this.users = [];
+  }
 
   async findById(id: string): Promise<User | undefined> {
     const user = this.users.find((curr) => curr.id === id);
@@ -22,7 +26,7 @@ export default class UsersRepositoryInMemory implements IUsersRepository {
     const { name, email, password, driverLicense } = data;
 
     Object.assign(user, {
-      id: Math.floor(Math.random() * 93847589237).toString(),
+      id: uuid(),
       name,
       email,
       password,

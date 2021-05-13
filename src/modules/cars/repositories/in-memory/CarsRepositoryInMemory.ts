@@ -1,9 +1,16 @@
-import ICreateCarDTO from "@modules/cars/dtos/ICreateCarDTO";
+import { uuid } from "uuidv4";
+
 import Car from "@modules/cars/infra/typeorm/entities/Car";
 import ICarsRepository from "../ICarsRepository";
 
+import ICreateCarDTO from "@modules/cars/dtos/ICreateCarDTO";
+
 export default class CarsRepositoryInMemory implements ICarsRepository {
-  cars: Car[] = [];
+  cars: Car[];
+
+  constructor() {
+    this.cars = [];
+  }
 
   async findByLicensePlate(licensePlate: string): Promise<Car | undefined> {
     const car = this.cars.find((curr) => curr.licensePlate === licensePlate);
@@ -22,7 +29,7 @@ export default class CarsRepositoryInMemory implements ICarsRepository {
     const car = new Car();
 
     Object.assign(car, {
-      id: String(Math.floor(Math.random() * 32984732)),
+      id: uuid(),
       name,
       description,
       brand,
@@ -30,6 +37,8 @@ export default class CarsRepositoryInMemory implements ICarsRepository {
       dailyRate,
       fineAmount,
       licensePlate,
+      available: true,
+      createdAt: new Date(),
     });
 
     this.cars.push(car);

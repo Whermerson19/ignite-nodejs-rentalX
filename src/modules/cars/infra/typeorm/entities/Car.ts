@@ -2,8 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import Category from "./Category";
 
 @Entity("cars")
 export default class Car {
@@ -16,20 +19,24 @@ export default class Car {
   @Column()
   description: string;
 
-  @Column("numeric")
+  @Column()
   dailyRate: number;
 
-  @Column("bool")
-  available: boolean;
+  @Column()
+  available: true;
 
   @Column()
   licensePlate: string;
 
-  @Column("numeric")
+  @Column()
   fineAmount: number;
 
   @Column()
   brand: string;
+
+  @ManyToOne(() => Category, { eager: true })
+  @JoinColumn({ name: "categoryId" })
+  category: Category;
 
   @Column()
   categoryId: string;
