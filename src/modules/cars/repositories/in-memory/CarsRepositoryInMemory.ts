@@ -12,6 +12,31 @@ export default class CarsRepositoryInMemory implements ICarsRepository {
     this.cars = [];
   }
 
+  async findById(id: string): Promise<Car | undefined> {
+    const car = this.cars.find(curr => curr.id === id);
+    return car;
+  }
+
+  async findAvailable(
+    categoryId?: string,
+    name?: string,
+    brand?: string
+  ): Promise<Car[]> {
+    const cars = this.cars.filter((curr) => {
+      if (
+        curr.available ||
+        (brand && curr.brand === brand) ||
+        (name && curr.name === name) ||
+        (categoryId && curr.categoryId === categoryId)
+      ) {
+        return curr;
+      }
+
+      return null;
+    });
+    return cars;
+  }
+
   async findByLicensePlate(licensePlate: string): Promise<Car | undefined> {
     const car = this.cars.find((curr) => curr.licensePlate === licensePlate);
     return car;
@@ -43,6 +68,10 @@ export default class CarsRepositoryInMemory implements ICarsRepository {
 
     this.cars.push(car);
 
+    return car;
+  }
+
+  async save(car: Car): Promise<Car> {
     return car;
   }
 }

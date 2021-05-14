@@ -4,13 +4,17 @@ import { getRepository, Repository } from "typeorm";
 
 import Specification from "../entities/Specification";
 
-
 export default class SpecificationsRepository
-  implements ISpecificationsRepository {
+  implements ISpecificationsRepository
+{
   private specificationsRepostiory: Repository<Specification>;
 
   constructor() {
     this.specificationsRepostiory = getRepository(Specification);
+  }
+
+  async findByIds(ids: string[]): Promise<Specification[] | undefined> {
+    return this.specificationsRepostiory.findByIds(ids);
   }
 
   async findByName(name: string): Promise<Specification | undefined> {

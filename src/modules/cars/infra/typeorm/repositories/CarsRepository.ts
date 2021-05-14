@@ -12,6 +12,37 @@ export default class CarsRepository implements ICarsRepository {
     this.ormRepository = getRepository(Car);
   }
 
+  async findById(id: string): Promise<Car | undefined> {
+    const car = await this.ormRepository.findOne(id);
+    return car;
+  }
+
+  async findAvailable(
+    categoryId?: string,
+    name?: string,
+    brand?: string
+  ): Promise<Car[]> {
+    const carsQuery = this.ormRepository
+      .createQueryBuilder("c")
+      .where("available = :available", { available: true });
+
+    if (brand) {
+      carsQuery.andWhere("c.brand = :brand", { brand });
+    }
+
+    if (name) {
+      carsQuery.andWhere("c.name = :name", { name });
+    }
+
+    if (categoryId) {
+      carsQuery.andWhere("c.categoryId = :categoryId", { categoryId });
+    }
+
+    const cars = await carsQuery.getMany();
+
+    return cars;
+  }
+
   async findByLicensePlate(licensePlate: string): Promise<Car | undefined> {
     const car = await this.ormRepository.findOne({ licensePlate });
 
@@ -25,7 +56,7 @@ export default class CarsRepository implements ICarsRepository {
     categoryId,
     dailyRate,
     fineAmount,
-    licensePlate
+    licensePlate,
   }: ICreateCarDTO): Promise<Car> {
     const car = this.ormRepository.create({
       name,
@@ -37,6 +68,10 @@ export default class CarsRepository implements ICarsRepository {
       fineAmount,
     });
 
+    return this.ormRepository.save(car);
+  }
+
+  async save(car: Car): Promise<Car> {
     return this.ormRepository.save(car);
   }
 }
