@@ -1,11 +1,14 @@
 import RentalsRepositoryInMemory from "@modules/rentals/repositories/in-memory/RentalsRepositoryInMemory";
 import AppError from "@shared/errors/AppError";
+import dayjs from "dayjs";
 import CreateRentalUseCase from "./CreateRentalUseCase";
 
 let rentalsRepositoryInMemory: RentalsRepositoryInMemory;
 let createRentalUseCase: CreateRentalUseCase;
 
 describe("Create Rental", () => {
+  const expectDate = dayjs().add(1, "day").toDate();
+
   beforeEach(() => {
     rentalsRepositoryInMemory = new RentalsRepositoryInMemory();
     createRentalUseCase = new CreateRentalUseCase(rentalsRepositoryInMemory);
@@ -15,7 +18,7 @@ describe("Create Rental", () => {
     const rental = await createRentalUseCase.execute({
       carId: "carId",
       userId: "userId",
-      expectedReturnDate: new Date(),
+      expectedReturnDate: expectDate,
     });
 
     expect(rental).toHaveProperty("id");
@@ -27,13 +30,13 @@ describe("Create Rental", () => {
       await createRentalUseCase.execute({
         carId: "12345",
         userId: "12345",
-        expectedReturnDate: new Date(),
+        expectedReturnDate: expectDate,
       });
 
       await createRentalUseCase.execute({
         carId: "98765",
         userId: "12345",
-        expectedReturnDate: new Date(),
+        expectedReturnDate: expectDate,
       });
     }).rejects.toBeInstanceOf(AppError);
   });
@@ -43,15 +46,24 @@ describe("Create Rental", () => {
       await createRentalUseCase.execute({
         carId: "12345",
         userId: "345436",
-        expectedReturnDate: new Date(),
+        expectedReturnDate: expectDate,
       });
 
       await createRentalUseCase.execute({
         carId: "12345",
         userId: "234234",
-        expectedReturnDate: new Date(),
+        expectedReturnDate: expectDate,
       });
     }).rejects.toBeInstanceOf(AppError);
   });
 
+  it("should not be able to create a new rental with invalid return date", async () => {
+    await expect(async() => {
+      await createRentalUseCase.execute({
+        carId: "12345",
+        userId: "12345",
+        expectedReturnDate: dayjs().toDate(),
+      });
+    }).rejects.toBeInstanceOf(AppError);
+  });
 });

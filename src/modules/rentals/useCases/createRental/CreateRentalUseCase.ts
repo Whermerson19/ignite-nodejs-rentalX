@@ -1,8 +1,14 @@
 import { injectable, inject } from "tsyringe";
+
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
 import IRentalsRepository from "@modules/rentals/repositories/IRentalsRepository";
 import Rental from "@modules/rentals/infra/typeorm/entities/Rental";
 
 import AppError from "@shared/errors/AppError";
+
+dayjs.extend(utc);
 
 interface IRequest {
   userId: string;
@@ -32,6 +38,20 @@ export default class CreateRentalUseCase {
 
     if (openRentalByUser)
       throw new AppError("There's a rental in progress for this user");
+
+    const expectReturnDateFormat = dayjs(expectedReturnDate)
+      .utc()
+      .local()
+      .format();
+
+    const currDate = dayjs(new Date())
+      .utc()
+      .local()
+      .format();
+
+    const compare = dayjs(expectReturnDateFormat).diff(currDate, "hours");
+
+    if (compare < 24) throw new AppError("Invalid return Date, must be 24 hours minimum")
 
     const rental = await this.rentalsRepository.create({
       carId,
