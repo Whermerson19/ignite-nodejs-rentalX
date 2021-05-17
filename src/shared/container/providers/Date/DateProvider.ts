@@ -7,11 +7,18 @@ dayjs.extend(utc);
 
 export default class DateProvider implements IDateProvider {
   
-  compare(startDate: Date, endDate: Date): number {
+  compareInHours(startDate: Date, endDate: Date): number {
     const endDateReturn = this.convertToUtc(endDate);
     const startDateReturn = this.convertToUtc(startDate);
 
     return dayjs(endDateReturn).diff(startDateReturn, "hours");
+  }
+
+  compareInDays(startDate: Date, endDate: Date): number {
+    const endDateReturn = this.convertToUtc(endDate);
+    const startDateReturn = this.convertToUtc(startDate);
+
+    return dayjs(endDateReturn).diff(startDateReturn, "days");
   }
 
   convertToUtc(date: Date): string {

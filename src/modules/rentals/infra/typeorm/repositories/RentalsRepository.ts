@@ -19,12 +19,12 @@ export default class RentalsRepository implements IRentalsRepository {
   async findByCar(carId: string): Promise<Rental | undefined> {
     const rental = await this.ormRepository.findOne(carId);
 
-    return rental && !rental.endDate ? rental : undefined;
+    return rental && rental.endDate === null ? rental : undefined;
   }
   async findOpenRentalByUser(userId: string): Promise<Rental | undefined> {
     const rental = await this.ormRepository.findOne(userId);
 
-    return rental && !rental.endDate ? rental : undefined;
+    return rental && rental.endDate === null ? rental : undefined;
   }
   async create({
     carId,

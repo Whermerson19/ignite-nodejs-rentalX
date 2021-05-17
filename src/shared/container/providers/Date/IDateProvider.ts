@@ -1,5 +1,6 @@
 export default interface IDateProvider {
-  compare(startDate: Date, endDate: Date): number;
+  compareInHours(startDate: Date, endDate: Date): number;
+  compareInDays(startDate: Date, endDate: Date): number;
   convertToUtc(date: Date): string;
   dateNow(): Date;
 }

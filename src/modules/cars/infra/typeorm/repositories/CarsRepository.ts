@@ -49,6 +49,17 @@ export default class CarsRepository implements ICarsRepository {
     return car;
   }
 
+  async updateAvailable(id: string, available: boolean): Promise<void> {
+    const car = await this.ormRepository
+      .createQueryBuilder()
+      .update()
+      .set({ available })
+      .where("id = :id")
+      .setParameters({ id })
+      .execute();
+
+  }
+
   async create({
     name,
     description,

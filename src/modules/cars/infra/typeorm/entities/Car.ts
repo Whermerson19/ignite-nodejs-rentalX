@@ -26,7 +26,7 @@ export default class Car {
   dailyRate: number;
 
   @Column()
-  available: true;
+  available: boolean;
 
   @Column()
   licensePlate: string;

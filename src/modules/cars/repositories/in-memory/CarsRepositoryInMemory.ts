@@ -13,7 +13,7 @@ export default class CarsRepositoryInMemory implements ICarsRepository {
   }
 
   async findById(id: string): Promise<Car | undefined> {
-    const car = this.cars.find(curr => curr.id === id);
+    const car = this.cars.find((curr) => curr.id === id);
     return car;
   }
 
@@ -40,6 +40,11 @@ export default class CarsRepositoryInMemory implements ICarsRepository {
   async findByLicensePlate(licensePlate: string): Promise<Car | undefined> {
     const car = this.cars.find((curr) => curr.licensePlate === licensePlate);
     return car;
+  }
+
+  async updateAvailable(id: string, available: boolean): Promise<void> {
+    const index = this.cars.findIndex((car) => car.id === id);
+    this.cars[index].available = available;
   }
 
   async create({

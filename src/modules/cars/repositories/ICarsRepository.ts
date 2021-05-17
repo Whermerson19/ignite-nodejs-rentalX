@@ -9,6 +9,7 @@ export default interface ICarsRepository {
     brand?: string
   ): Promise<Car[]>;
   findByLicensePlate(licensePlate: string): Promise<Car | undefined>;
+  updateAvailable(id: string, available: boolean): Promise<void>
   create(data: ICreateCarDTO): Promise<Car>;
   save(car: Car): Promise<Car>;
 }

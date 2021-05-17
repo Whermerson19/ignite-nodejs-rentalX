@@ -7,6 +7,7 @@ import Rental from "@modules/rentals/infra/typeorm/entities/Rental";
 
 import IRentalsRepository from "@modules/rentals/repositories/IRentalsRepository";
 import IDateProvider from "@shared/container/providers/Date/IDateProvider";
+import ICarsRepository from "@modules/cars/repositories/ICarsRepository";
 
 import AppError from "@shared/errors/AppError";
 
@@ -24,7 +25,9 @@ export default class CreateRentalUseCase {
     @inject("RentalsRepository")
     private rentalsRepository: IRentalsRepository,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+    @inject("CarsRepository")
+    private carsRepository: ICarsRepository
   ) {}
 
   async execute({
@@ -44,7 +47,7 @@ export default class CreateRentalUseCase {
       throw new AppError("There's a rental in progress for this user");
 
     const dateNow = this.dateProvider.dateNow();
-    const compare = this.dateProvider.compare(dateNow, expectedReturnDate);
+    const compare = this.dateProvider.compareInHours(dateNow, expectedReturnDate);
 
     if (compare < 24)
       throw new AppError("Invalid return Date, must be 24 hours minimum");
@@ -54,6 +57,8 @@ export default class CreateRentalUseCase {
       userId,
       expectedReturnDate,
     });
+
+    await this.carsRepository.updateAvailable(carId, false);
 
     return rental;
   }
