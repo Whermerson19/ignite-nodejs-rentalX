@@ -26,6 +26,18 @@ export default class RentalsRepository implements IRentalsRepository {
 
     return rental && rental.endDate === null ? rental : undefined;
   }
+
+  async findRentalsByUser(userId: string): Promise<Rental[]> {
+    const rentals = await this.ormRepository.find({
+      where: {
+        userId,
+      },
+      relations: ["car"]
+    });
+
+    return rentals;
+  }
+
   async create({
     carId,
     expectedReturnDate,
