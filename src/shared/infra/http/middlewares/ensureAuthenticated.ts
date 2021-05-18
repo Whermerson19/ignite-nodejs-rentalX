@@ -6,6 +6,7 @@ import { verify } from "jsonwebtoken";
 
 import authConfig from "@shared/config/auth";
 import AppError from "@shared/errors/AppError";
+import UsersTokensRepository from "@modules/accounts/infra/typeorm/repositories/UsersTokensRepository";
 
 interface IPayload {
   sub: string;
@@ -22,13 +23,13 @@ export async function ensureAuthenticated(
   const [, token] = authHeader.split(" ");
 
   try {
-    const verifyToken = verify(token, authConfig.jwt.secret) as IPayload;
+    const verifyToken = verify(token, authConfig.refresh_token.secret) as IPayload;
 
     const { sub } = verifyToken;
 
-    const usersRepository = new UsersRepository();
+    const usersTokensRepository = new UsersTokensRepository();
 
-    const user = await usersRepository.findById(sub);
+    const user = await usersTokensRepository.findByUserIdAndRefreshToken(sub, token);
     if (!user) throw new AppError("This user does not exist", 401);
 
     request.user = {

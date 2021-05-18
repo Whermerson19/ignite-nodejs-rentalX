@@ -13,15 +13,16 @@ export default class RentalsRepositoryInMemory implements IRentalsRepository {
   }
 
   async findByCar(carId: string): Promise<Rental | undefined> {
-    return this.rentals.find(
-      (curr) => curr.carId === carId && !curr.endDate
-    );
+    return this.rentals.find((curr) => curr.carId === carId && !curr.endDate);
+  }
+
+  async findRentalsByUser(userId: string): Promise<Rental[]> {
+    const rentals = this.rentals.filter((rental) => rental.userId === userId);
+    return rentals;
   }
 
   async findOpenRentalByUser(userId: string): Promise<Rental | undefined> {
-    return this.rentals.find(
-      (curr) => curr.userId === userId && !curr.endDate
-    );
+    return this.rentals.find((curr) => curr.userId === userId && !curr.endDate);
   }
 
   async create({

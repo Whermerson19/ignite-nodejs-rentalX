@@ -8,6 +8,8 @@ import IUsersRepository from "@modules/accounts/repositories/IUsersRepository";
 
 import authConfig from "@shared/config/auth";
 import AppError from "@shared/errors/AppError";
+import IUsersTokensRepository from "@modules/accounts/repositories/IUsersTokensRepository";
+import IDateProvider from "@shared/container/providers/Date/IDateProvider";
 
 interface IRequest {
   email: string;
@@ -17,13 +19,18 @@ interface IRequest {
 interface IResponse {
   user: User;
   token: string;
+  refresh_token: string;
 }
 
 @injectable()
 export default class AuthenticateUserUseCase {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+    @inject("UsersTokensRepository")
+    private usersTokensRepository: IUsersTokensRepository,
+    @inject("DateProvider")
+    private dateProvider: IDateProvider
   ) {}
 
   async execute({ email, password }: IRequest): Promise<IResponse> {
@@ -39,9 +46,23 @@ export default class AuthenticateUserUseCase {
       expiresIn: authConfig.jwt.expiresIn,
     });
 
+    const refresh_token = sign({ email }, authConfig.refresh_token.secret, {
+      subject: user.id,
+      expiresIn: authConfig.refresh_token.expiresIn,
+    });
+
+    await this.usersTokensRepository.create({
+      expires_date: this.dateProvider.addDays(
+        authConfig.refresh_token.expires_days
+      ),
+      refresh_token,
+      userId: user.id,
+    });
+
     return {
       user,
       token,
+      refresh_token,
     };
   }
 }
