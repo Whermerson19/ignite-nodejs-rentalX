@@ -8,6 +8,7 @@ import specificationsRouter from "@modules/cars/infra/http/routes/specifications
 import carsRouter from "@modules/cars/infra/http/routes/cars.routes";
 
 import rentalRouter from "@modules/rentals/infra/http/routes/rental.routes";
+import passwordRouter from "@modules/accounts/infra/http/routes/passwords.routes";
 
 const appRouter = Router();
 
@@ -19,8 +20,9 @@ appRouter.use("/cars", carsRouter);
 // Accounts Module
 appRouter.use("/users", usersRouter);
 appRouter.use("/sessions", sessionsRouter);
+appRouter.use("/password", passwordRouter);
 
 //Rentals Module
-appRouter.use("/rentals", rentalRouter)
+appRouter.use("/rentals", rentalRouter);
 
 export default appRouter;
