@@ -12,6 +12,7 @@ interface IPayload {
 
 interface IResponse {
   refresh_token: string;
+  token: string;
 }
 
 @injectable()
@@ -54,6 +55,11 @@ export default class CreateRefreshTokenUseCase {
       userId: decode.sub,
     });
 
-    return { refresh_token };
+    const newToken = sign({}, authConfig.refresh_token.secret, {
+      subject: userId,
+      expiresIn: authConfig.refresh_token.expiresIn,
+    });
+
+    return { refresh_token, token: newToken };
   }
 }
