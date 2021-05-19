@@ -33,4 +33,8 @@ export default class UsersTokensRepository implements IUsersTokensRepository {
   async deleleById(id: string): Promise<void> {
     await this.ormRepository.delete(id);
   }
+
+  async findByToken(token: string): Promise<UserTokens | undefined> {
+    return this.ormRepository.findOne({ refresh_token: token });
+  } 
 }

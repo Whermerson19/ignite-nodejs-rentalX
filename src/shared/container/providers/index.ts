@@ -15,4 +15,4 @@ container.registerSingleton<IStorageProvider>(
   StorageProvider
 );
 
-container.registerSingleton<IMailProvider>("MailProvider", MailProvider);
+container.registerInstance<IMailProvider>("MailProvider", new MailProvider());
