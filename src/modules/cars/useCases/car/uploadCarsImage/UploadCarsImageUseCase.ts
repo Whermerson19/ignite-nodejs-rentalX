@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import ICarsImageRepository from "@modules/cars/repositories/ICarsImageRepository";
 import ICarsRepository from "@modules/cars/repositories/ICarsRepository";
 import AppError from "@shared/errors/AppError";
+import IStorageProvider from "@shared/container/providers/Storage/IStorageProvider";
 
 interface IRequest {
   carId: string;
@@ -17,7 +18,10 @@ export default class UploadCarsImageUseCase {
     private carsImageRepository: ICarsImageRepository,
 
     @inject("CarsRepository")
-    private carsRepository: ICarsRepository
+    private carsRepository: ICarsRepository,
+
+    @inject("StorageProvider")
+    private storageProvider: IStorageProvider
   ) {}
 
   async execute({ carId, carsImage }: IRequest): Promise<void> {
@@ -25,7 +29,8 @@ export default class UploadCarsImageUseCase {
     if (!car) throw new AppError("This car does not exist");
 
     carsImage.map(async(curr) => {
-      const image = await this.carsImageRepository.create(carId, curr)
+      await this.carsImageRepository.create(carId, curr)
+      await this.storageProvider.saveFile(curr, "cars")
     });
   }
 }

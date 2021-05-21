@@ -11,14 +11,9 @@ import S3StorageProvider from "./Storage/S3StorageProvider";
 
 container.registerSingleton<IDateProvider>("DateProvider", DateProvider);
 
-const diskStorage = {
-  local: LocalStorageProvider,
-  s3: S3StorageProvider,
-};
-
 container.registerSingleton<IStorageProvider>(
-  "LocalStorageProvider",
-  diskStorage[process.env.DISK]
+  "StorageProvider",
+  process.env.DISK === "local" ? LocalStorageProvider : S3StorageProvider
 );
 
 container.registerInstance<IMailProvider>("MailProvider", new MailProvider());

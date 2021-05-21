@@ -17,7 +17,7 @@ export default class UpdateUserAvatarUseCase {
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
 
-    @inject("LocalStorageProvider")
+    @inject("StorageProvider")
     private storageProvider: IStorageProvider
   ) {}
 

@@ -31,13 +31,23 @@ export default class User {
   @Column("boolean")
   isAdmin: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn()  
   createdAt: Date;
 
   @Expose({ name: "avatarURL" })
   getAvatarUrl(): string | null {
-    return this.avatar
-      ? `http://localhost:3333/files/avatar/${this.avatar}`
-      : null;
+    switch (process.env.DISK) {
+      case "local":
+        return `${process.env.APP_API_LOCAL}/files/avatar/${this.avatar}`;
+      case "s3":
+        return `${process.env.AWS_IMAGES_URL}/avatar/${this.avatar}`;
+      default:
+        return null;
+    }
+    // !this.avatar
+    //   ? null
+    //   : process.env.DISK === "local"
+    //   ? `${process.env.APP_API_LOCAL}/files/avatar/${this.avatar}`
+    //   : `${process.env.AWS_IMAGES_URL}/avatar/${this.avatar}`; 
   }
-}
+} 

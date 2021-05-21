@@ -11,10 +11,10 @@ import IStorageProvider from "./IStorageProvider";
 
 export default class S3StorageProvider implements IStorageProvider {
   private client: S3;
-
+ 
   constructor() {
     this.client = new S3({
-      region: process.env.AWS_BUCKET_REGION,
+      region: process.env.AWS_BUCKET_REGION, 
     });
   }
 
