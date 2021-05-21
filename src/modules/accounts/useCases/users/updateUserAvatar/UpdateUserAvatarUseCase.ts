@@ -17,7 +17,7 @@ export default class UpdateUserAvatarUseCase {
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
 
-    @inject("StorageProvider")
+    @inject("LocalStorageProvider")
     private storageProvider: IStorageProvider
   ) {}
 
@@ -27,9 +27,11 @@ export default class UpdateUserAvatarUseCase {
     if (!user) throw new AppError("This user does not exist", 401);
 
     if (user.avatar)
-      await this.storageProvider.deleteFile(`./tmp/avatar/${user.avatar}`);
+      await this.storageProvider.deleteFile(user.avatar, "avatar");
 
-    user.avatar = avatarFile;
+    const file = await this.storageProvider.saveFile(avatarFile, "avatar");
+
+    user.avatar = file;
 
     return this.usersRepository.save(user);
   }
