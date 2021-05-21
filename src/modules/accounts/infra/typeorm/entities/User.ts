@@ -40,14 +40,9 @@ export default class User {
       case "local":
         return `${process.env.APP_API_LOCAL}/files/avatar/${this.avatar}`;
       case "s3":
-        return `${process.env.AWS_IMAGES_URL}/avatar/${this.avatar}`;
+        return `${process.env.AWS_IMAGES_URL}avatar/${this.avatar}`;
       default:
         return null;
     }
-    // !this.avatar
-    //   ? null
-    //   : process.env.DISK === "local"
-    //   ? `${process.env.APP_API_LOCAL}/files/avatar/${this.avatar}`
-    //   : `${process.env.AWS_IMAGES_URL}/avatar/${this.avatar}`; 
   }
 } 
